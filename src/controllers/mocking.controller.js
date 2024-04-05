@@ -3,7 +3,7 @@ import { generateProducts } from "../utils.js"
 export const getProducts = async (req,res) => {
     try{
         let products = [];
-        for (let i = 0; i < 50; i++){
+        for (let i = 0; i < 10; i++){
             products.push(generateProducts());
         }
         res.send({status: "success", payload: products});

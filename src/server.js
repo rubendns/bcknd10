@@ -18,8 +18,10 @@ import { allowInsecurePrototypeAccess } from "@handlebars/allow-prototype-access
 import initializePassport from "./config/passport.config.js";
 import config from './config/config.js';
 import emailRouter from './routes/email.router.js';
-import mockingRouter from "./routes/mocking.router.js";
+//import mockingRouter from "./routes/mocking.router.js";
 import { addLogger } from './middlewares/logger.middleware.js';
+import specs from './config/swagger.config.js';
+import swaggerUi from "swagger-ui-express";
 
 const app = express();
 
@@ -96,14 +98,12 @@ const userExtRouter = new UserExtendRouter();
 const productsExtRouter = new ProductsExtendRouter();
 const cartsExtRouter = new CartExtendRouter();
 
-//app.use("/users", userViewRouter);
-//app.use("/api/products", ProductRouter);
-//app.use("/api/carts", CartsRouter);
 app.use("/api/users", userExtRouter.getRouter());
 app.use("/api/products", productsExtRouter.getRouter());
 app.use("/api/carts", cartsExtRouter.getRouter());
 app.use("/api/email", emailRouter);
-app.use("/mockingproducts", mockingRouter);
+app.use("/mockingproducts", productsExtRouter.getRouter());
+app.use("/api/docs", swaggerUi.serve, swaggerUi.setup(specs));
 app.get("/failure", (req, res) => {
   res.status(404).send("Error: Page not found");
 });
